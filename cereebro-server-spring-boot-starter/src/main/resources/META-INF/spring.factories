@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.cereebro.server.eureka.CereebroEurekaServerAddOnAutoConfiguration,io.cereebro.server.discovery.CereebroDiscoveryClientAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=io.cereebro.server.eureka.CereebroEurekaServerAddOnAutoConfiguration,io.cereebro.server.discovery.CereebroDiscoveryClientAutoConfiguration,io.cereebro.server.neo4j.CerebroNeo4jConfiguration

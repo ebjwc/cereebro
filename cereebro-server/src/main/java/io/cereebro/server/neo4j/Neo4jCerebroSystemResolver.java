@@ -1,3 +1,18 @@
+/*
+ * Copyright © 2017 the original authors (http://cereebro.io)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package io.cereebro.server.neo4j;
 
 import java.util.Collection;
@@ -26,6 +41,7 @@ import io.cereebro.core.System.SystemBuilder;
 import io.cereebro.core.SystemFragment;
 import io.cereebro.server.neo4j.model.CerebroComponent;
 import io.cereebro.server.neo4j.model.CerebroDependency;
+import io.cereebro.server.neo4j.model.MicroserviceNode;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -117,21 +133,23 @@ public class Neo4jCerebroSystemResolver extends SimpleSystemResolver {
 				CerebroComponent consumer = microserviceDependencyService.findComponent(rel.getComponent().getName());
 
 				// link dependencies
-				rel.getDependencies().forEach(e -> {
-					if (e.getComponent().getName() == null) {
-						LOGGER.error("cerebro component name is not set -" + e.getComponent().toString());
+				rel.getDependencies().forEach(dependencyNode -> {
+					if (dependencyNode.getComponent().getName() == null) {
+						LOGGER.error("cerebro component name is not set -" + dependencyNode.getComponent().toString());
 					} else {
 						CerebroComponent producer = microserviceDependencyService
-								.findComponent(e.getComponent().getName());
+								.findComponent(dependencyNode.getComponent().getName());
 						if (producer == null) {
 							CerebroComponent cerebroComponent = microserviceDependencyService.createOrSaveComponent(
-									new CerebroComponent(e.getComponent().getName(), splitTypesIntoSet(e.getComponent().getType())));
+									new CerebroComponent(dependencyNode.getComponent().getName(), splitTypesIntoSet(dependencyNode.getComponent().getType())));
+							MicroserviceNode microserviceNode = new MicroserviceNode();
+														
 							LOGGER.debug("Created node " + cerebroComponent.getName() + " of type "
 									+ cerebroComponent.getType());
 						}
 
 						CerebroDependency dep = new CerebroDependency(consumer, producer,
-								splitTypesIntoSet(e.getComponent().getType()));
+								splitTypesIntoSet(dependencyNode.getComponent().getType()));
 						microserviceDependencyService.createOrSaveDependency(dep);
 						LOGGER.debug("Created neo4j dependency " + producer.getName() + " ->" + consumer.getName()
 								+ " of type " + dep.getType());
