@@ -16,7 +16,9 @@
 package io.cereebro.snitch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,6 +32,7 @@ import lombok.Data;
 public final class ComponentRelationshipsProperties {
 
     private ComponentProperties component = new ComponentProperties();
+    private Map<String,String> exportkeys = new HashMap<String,String>();
     private List<DependencyProperties> dependencies = new ArrayList<>();
     private List<ConsumerProperties> consumers = new ArrayList<>();
 
@@ -44,5 +47,10 @@ public final class ComponentRelationshipsProperties {
     public Set<Relationship> getRelationships() {
         return Stream.concat(dependencies().stream(), consumers().stream()).collect(Collectors.toSet());
     }
+    
+    public Map<String,String> getExportkeys() {
+    	return exportkeys;
+    }
+    
 
 }

@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.cereebro.server;
 
-import io.cereebro.core.Snitch;
-import lombok.Data;
+package io.cereebro.core;
 
-@Data
-public final class SystemProperties {
+import java.util.HashSet;
+import java.util.Set;
 
-    /**
-     * System name.
-     */
-    private String name = "cereebro";
-    
+import lombok.Getter;
+import lombok.Setter;
 
+public abstract class BaseRelationshipDetector implements RelationshipDetector {
 
-    /**
-     * Path of the system HTML page and JSON resource.
-     */
-    private String path = "/cereebro/system";
+	  @Getter
+	  @Setter
+	  private String defaultName = "default";
 
-    /**
-     * Available {@link Snitch} resources.
-     */
-    private SnitchProperties snitch = new SnitchProperties();
+	  @Getter
+	  @Setter
+	  private Set<String> exportkeys = new HashSet<String>();
 
 }

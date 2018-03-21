@@ -46,7 +46,7 @@ public class RedisRelationshipDetectorBasicTest {
 
     @Test
     public void shouldReturnRedisDependencyWithDefaultName() {
-        Dependency dependency = Dependency.on(Component.of("default", ComponentType.REDIS));
+        Dependency dependency = Dependency.on(Component.of("redis", ComponentType.REDIS));
         Set<Relationship> rels = new HashSet<>(Arrays.asList(dependency));
         Assertions.assertThat(detector.detect()).isEqualTo(rels);
     }

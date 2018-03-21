@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentRelationships;
 import io.cereebro.core.ComponentRelationships.ComponentRelationshipsBuilder;
@@ -41,7 +43,6 @@ import io.cereebro.core.System.SystemBuilder;
 import io.cereebro.core.SystemFragment;
 import io.cereebro.server.neo4j.model.CerebroComponent;
 import io.cereebro.server.neo4j.model.CerebroDependency;
-import io.cereebro.server.neo4j.model.MicroserviceNode;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -53,10 +54,14 @@ public class Neo4jCerebroSystemResolver extends SimpleSystemResolver {
 
 	private final Pattern pattern;
 
-	public Neo4jCerebroSystemResolver(MicroserviceDependencyService microserviceDependencyService,
-			String componentFilter) {
+	@Value("cereebro.server.system.component.filter")
+	private String componentFilter;
+
+	public Neo4jCerebroSystemResolver(MicroserviceDependencyService microserviceDependencyService) {
 		this.microserviceDependencyService = microserviceDependencyService;
-		pattern = Pattern.compile(componentFilter);
+		if (componentFilter!=null)
+			pattern = Pattern.compile(componentFilter);
+		else pattern = null;
 
 	}
 
@@ -110,7 +115,7 @@ public class Neo4jCerebroSystemResolver extends SimpleSystemResolver {
 
 		// Browse all relationships to complete them with one another
 		for (ComponentRelationships rel : relationships) {
-			if (pattern.matcher(rel.getComponent().getName()).matches())
+			if (pattern!=null && pattern.matcher(rel.getComponent().getName()).matches())
 				continue;
 
 			ComponentRelationshipsBuilder cerebroCompRelBuilder = getOrCreate(map, rel.getComponent());
@@ -142,7 +147,6 @@ public class Neo4jCerebroSystemResolver extends SimpleSystemResolver {
 						if (producer == null) {
 							CerebroComponent cerebroComponent = microserviceDependencyService.createOrSaveComponent(
 									new CerebroComponent(dependencyNode.getComponent().getName(), splitTypesIntoSet(dependencyNode.getComponent().getType())));
-							MicroserviceNode microserviceNode = new MicroserviceNode();
 														
 							LOGGER.debug("Created node " + cerebroComponent.getName() + " of type "
 									+ cerebroComponent.getType());

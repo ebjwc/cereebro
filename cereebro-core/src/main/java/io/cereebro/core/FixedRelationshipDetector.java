@@ -26,7 +26,7 @@ import java.util.Set;
  * 
  * @author michaeltecourt
  */
-public class FixedRelationshipDetector implements RelationshipDetector {
+public class FixedRelationshipDetector extends BaseRelationshipDetector  {
 
     private final Set<Relationship> relationships;
 

@@ -34,7 +34,7 @@ public class ComponentPropertiesTest {
 
     @Test
     public void equalsHashcode() {
-        EqualsVerifier.forClass(ComponentProperties.class).suppress(Warning.NONFINAL_FIELDS).verify();
+        EqualsVerifier.forClass(ComponentProperties.class).suppress(Warning.NONFINAL_FIELDS, Warning.INHERITED_DIRECTLY_FROM_OBJECT).verify();
     }
 
     @Test
@@ -50,7 +50,7 @@ public class ComponentPropertiesTest {
         c.setName("wolverine");
         c.setType("superhero");
         Component expected = Component.of("wolverine", "superhero");
-        Component actual = c.toComponent();
+       Component actual = c.toComponent();
         Assert.assertEquals(expected, actual);
     }
 

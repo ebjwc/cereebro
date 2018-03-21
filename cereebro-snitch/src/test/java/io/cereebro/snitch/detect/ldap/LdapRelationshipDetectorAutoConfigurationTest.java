@@ -49,7 +49,7 @@ public class LdapRelationshipDetectorAutoConfigurationTest {
 
     @Test
     public void shouldDetectLdapDependency() {
-        Set<Relationship> expected = Dependency.on(Component.of("default", ComponentType.LDAP)).asRelationshipSet();
+        Set<Relationship> expected = Dependency.on(Component.of("ldap", ComponentType.LDAP)).asRelationshipSet();
         Assertions.assertThat(detector.detect()).isEqualTo(expected);
     }
 

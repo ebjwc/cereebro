@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.springframework.ldap.core.ContextSource;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import io.cereebro.core.Dependency;
@@ -41,13 +42,13 @@ import lombok.Setter;
  * @author michaeltecourt
  *
  */
-public class LdapRelationshipDetector implements RelationshipDetector {
+public class LdapRelationshipDetector extends BaseRelationshipDetector implements RelationshipDetector {
 
     private final List<ContextSource> contextSources;
 
     @Getter
     @Setter
-    private String defaultName = "default";
+    private String defaultName = "ldap";
 
     public LdapRelationshipDetector(List<ContextSource> sources) {
         this.contextSources = new ArrayList<>();

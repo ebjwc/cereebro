@@ -15,13 +15,13 @@
  */
 package io.cereebro.snitch;
 
+import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.EnvironmentAware;
-import org.springframework.core.env.Environment;
+import org.springframework.context.EmbeddedValueResolverAware;
 import org.springframework.util.StringUtils;
+import org.springframework.util.StringValueResolver;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -29,26 +29,31 @@ import lombok.extern.slf4j.Slf4j;
 @ConfigurationProperties(prefix = "cereebro", ignoreUnknownFields = true)
 @Data
 @Slf4j
-public final class CereebroProperties implements EnvironmentAware {
+public final class CereebroProperties implements EmbeddedValueResolverAware {
 
-    private ComponentRelationshipsProperties application = new ComponentRelationshipsProperties();
-    private SnitchProperties snitch = new SnitchProperties();
+	private ComponentRelationshipsProperties application = new ComponentRelationshipsProperties();
+	private SnitchProperties snitch = new SnitchProperties();
 
-    @Override
-    public void setEnvironment(Environment env) {
-        if (!StringUtils.hasText(application.getComponent().getName())) {
-            // set the application name from the environment,
-            // but allow the defaults to use relaxed binding
-            // (shamelessly copied from Spring Boot)
-            RelaxedPropertyResolver springPropertyResolver = new RelaxedPropertyResolver(env, "spring.application.");
-            String appName = springPropertyResolver.getProperty("name");
-            application.getComponent().setName(StringUtils.hasText(appName) ? appName : generateName());
-        }
-    }
+	private String generateName() {
+		LOGGER.warn("Generating random name for this application -- please set spring.application.name property !");
+		return UUID.randomUUID().toString();
+	}
 
-    private String generateName() {
-        LOGGER.warn("Generating random name for this application -- please set spring.application.name property !");
-        return UUID.randomUUID().toString();
-    }
+	@Override
+	public void setEmbeddedValueResolver(StringValueResolver resolver) {
+		if (!StringUtils.hasText(application.getComponent().getName())) {
+			String appName = resolver.resolveStringValue("${spring.application.name:UNKNOWN APP}");
+			application.getComponent().setName(StringUtils.hasText(appName) ? appName : generateName());
+		} else {
+
+			for (Map.Entry<String, String> entry : application.getExportkeys().entrySet()) {
+				String propSource = resolver.resolveStringValue(entry.getValue());
+				String propDestName = entry.getKey();
+				if (propSource != null && propSource.trim().length() > 0) {
+					application.getComponent().getProperties().put(propDestName, propSource);
+				}
+			}
+		}
+	}
 
 }

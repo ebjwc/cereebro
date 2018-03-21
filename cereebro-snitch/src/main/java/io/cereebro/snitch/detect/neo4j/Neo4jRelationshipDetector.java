@@ -24,6 +24,7 @@ import java.util.Set;
 import org.neo4j.ogm.session.Session;
 import org.springframework.util.CollectionUtils;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import io.cereebro.core.Dependency;
@@ -40,11 +41,11 @@ import lombok.Setter;
  * @author lucwarrot
  * @author michaeltecourt
  */
-public class Neo4jRelationshipDetector implements RelationshipDetector {
+public class Neo4jRelationshipDetector extends BaseRelationshipDetector  implements RelationshipDetector {
 
     @Getter
     @Setter
-    private String defaultName = "default";
+    private String defaultName = "neo4j";
 
     private final List<Session> sessions;
 

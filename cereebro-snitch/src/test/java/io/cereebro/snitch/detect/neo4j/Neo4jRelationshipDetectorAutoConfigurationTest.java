@@ -45,7 +45,7 @@ public class Neo4jRelationshipDetectorAutoConfigurationTest {
 
     @Test
     public void shouldReturnDependencyOnDefaultNeo4jComponent() {
-        Set<Relationship> rels = Dependency.on(Component.of("default", ComponentType.NEO4J)).asRelationshipSet();
+        Set<Relationship> rels = Dependency.on(Component.of("neo4j", ComponentType.NEO4J)).asRelationshipSet();
         Assertions.assertThat(detector.detect()).isEqualTo(rels);
     }
 

@@ -15,6 +15,7 @@
  */
 package io.cereebro.core;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -34,6 +35,8 @@ public class Component {
     private final String name;
 
     private final String type;
+    
+    private final Map<String,Object> properties;
 
     /**
      * Cereebro base unit of work.
@@ -44,11 +47,12 @@ public class Component {
      *            Type of the component.
      */
     @JsonCreator
-    public Component(@JsonProperty("name") String name, @JsonProperty("type") String type) {
+    public Component(@JsonProperty("name") String name, @JsonProperty("type") String type, @JsonProperty("properties") Map<String,Object> properties ) {
         this.name = Objects.requireNonNull(name, "Component name required");
         this.type = Objects.requireNonNull(type, "Component type required");
+        this.properties = properties;
     }
-
+    
     /**
      * Cereebro base unit of work.
      * 
@@ -58,13 +62,18 @@ public class Component {
      *            Type of the component.
      * @return Component
      */
-    public static Component of(String name, String type) {
-        return new Component(name, type);
+    public static Component of(String name, String type, Map<String,Object> properties ) {
+        return new Component(name, type,properties);
     }
+    
+    public static Component of(String name, String type) {
+        return new Component(name, type,null);
+    }
+    
 
     @Override
     public int hashCode() {
-        return Objects.hash(getClass(), nameCaseInsensitive(), type);
+        return Objects.hash(getClass(), nameCaseInsensitive(), type,getProperties());
     }
 
     @Override
@@ -77,7 +86,7 @@ public class Component {
         }
         Component that = (Component) o;
         return Objects.equals(this.nameCaseInsensitive(), that.nameCaseInsensitive())
-                && Objects.equals(this.type, that.type);
+                && Objects.equals(this.type, that.type) && Objects.equals(this.getProperties(), that.getProperties());
     }
 
     /**
@@ -111,5 +120,14 @@ public class Component {
     public String getType() {
         return type;
     }
+    
+	/**
+	 * get dynamic properties
+	 * @return
+	 */
+	public Map<String,Object> getProperties() {
+		return properties;
+	}
+
 
 }

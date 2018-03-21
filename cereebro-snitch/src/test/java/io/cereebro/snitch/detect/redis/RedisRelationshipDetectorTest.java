@@ -44,7 +44,7 @@ public class RedisRelationshipDetectorTest {
         RedisRelationshipDetector detector = new RedisRelationshipDetector(new RedisProperties(),
                 Arrays.asList(factory));
         Set<Relationship> rels = new HashSet<>();
-        rels.add(Dependency.on(Component.of("default", ComponentType.REDIS)));
+        rels.add(Dependency.on(Component.of("redis", ComponentType.REDIS)));
         Assertions.assertThat(detector.detect()).isEqualTo(rels);
     }
 

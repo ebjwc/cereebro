@@ -29,6 +29,7 @@ import javax.sql.DataSource;
 
 import org.springframework.util.CollectionUtils;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.Dependency;
 import io.cereebro.core.Relationship;
@@ -46,7 +47,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public class DataSourceRelationshipDetector implements RelationshipDetector {
+public class DataSourceRelationshipDetector extends BaseRelationshipDetector  implements RelationshipDetector {
 
     private final List<DataSource> dataSources;
 

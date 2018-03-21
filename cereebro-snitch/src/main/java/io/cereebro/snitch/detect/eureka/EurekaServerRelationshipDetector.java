@@ -22,6 +22,7 @@ import java.util.Set;
 
 import com.netflix.discovery.EurekaClient;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import io.cereebro.core.Dependency;
@@ -38,7 +39,7 @@ import lombok.Setter;
  * @author michaeltecourt
  *
  */
-public class EurekaServerRelationshipDetector implements RelationshipDetector {
+public class EurekaServerRelationshipDetector extends BaseRelationshipDetector implements RelationshipDetector  {
 
     @Getter
     @Setter

@@ -18,6 +18,7 @@ package io.cereebro.snitch;
 import java.util.Objects;
 import java.util.Set;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Relationship;
 import io.cereebro.core.RelationshipDetector;
 
@@ -27,7 +28,7 @@ import io.cereebro.core.RelationshipDetector;
  * 
  * @author michaeltecourt
  */
-public class ConfigurationPropertiesRelationshipDetector implements RelationshipDetector {
+public class ConfigurationPropertiesRelationshipDetector extends BaseRelationshipDetector implements RelationshipDetector {
 
     private final CereebroProperties properties;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.cereebro.snitch.detect.amqp;
+package io.cereebro.snitch.detect.jms;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.jms.core.JmsTemplate;
 
 import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
@@ -31,14 +32,20 @@ import io.cereebro.core.Relationship;
 import io.cereebro.core.RelationshipDetector;
 
 /**
- * RabbitMQ relationship detector based on Spring's {@link ConnectionFactory}
+ * Jms relationship detector based on Spring's {@link ConnectionFactory}
  * abstraction.
+ * To import topic, queue or connection settings you can configure environment settings which will 
+ * be taken over into the relation by defining settings below in application.yml
+ * It's a map that export a key to cereebro snwitch > server with the value from the following SPRING SPEL expression extracted from environment 
+ * cereebro.application.snitch.detect.jms.exportkeys:
+ *           topic: ${daivb.core.event.publisher.jms.destination.prefix:''}${daivb.core.event.publisher.jms.destination.topic}
+ *           queue: ${daivb.core.event.publisher.jms.destination.queue} * 
  * 
- * @author michaeltecourt
+ * @author fwallwit
  */
-public class RabbitRelationshipDetector extends BaseRelationshipDetector  implements RelationshipDetector {
+public class JmsRelationshipDetector extends BaseRelationshipDetector  implements RelationshipDetector {
 
-    private final List<ConnectionFactory> connectionFactories;
+    private final List<JmsTemplate> jmsTemplates;
 
     /**
      * * RabbitMQ relationship detector based on Spring's
@@ -46,22 +53,22 @@ public class RabbitRelationshipDetector extends BaseRelationshipDetector  implem
      * to RabbitMQ will have a dependency on the broker : Both the "producer"
      * and "consumer" (MQ) applications have a dependency on RabbitMQ.
      * 
-     * @param rabbitConnectionFactories
+     * @param jmsTemplates
      *            All RabbitMQ connections available.
      */
-    public RabbitRelationshipDetector(List<ConnectionFactory> rabbitConnectionFactories) {
-        this.connectionFactories = new ArrayList<>();
-        if (rabbitConnectionFactories != null) {
-            connectionFactories.addAll(rabbitConnectionFactories);
+    public JmsRelationshipDetector(List<JmsTemplate> jmsTemplates) {
+        this.jmsTemplates = new ArrayList<>();
+        if (jmsTemplates != null) {
+        	jmsTemplates.addAll(jmsTemplates);
         }
     }
 
     @Override
     public Set<Relationship> detect() {
-        if (connectionFactories.isEmpty()) {
+        if (jmsTemplates.isEmpty()) {
             return Collections.emptySet();
         }
-        return connectionFactories.stream().map(factory -> createRabbitDependency(factory.getVirtualHost()))
+        return jmsTemplates.stream().map(factory -> createJmsDependency(factory.getDefaultDestinationName()))
                 .collect(Collectors.toSet());
     }
 
@@ -72,8 +79,8 @@ public class RabbitRelationshipDetector extends BaseRelationshipDetector  implem
      *            Component name.
      * @return Dependency on a component with RabbitMQ type.
      */
-    private Dependency createRabbitDependency(String name) {
-        return Dependency.on(Component.of(name, ComponentType.RABBITMQ));
+    private Dependency createJmsDependency(String name) {
+        return Dependency.on(Component.of(name, ComponentType.JMS));
     }
 
 }

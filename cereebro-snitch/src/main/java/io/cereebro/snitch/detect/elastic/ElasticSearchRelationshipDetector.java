@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import org.elasticsearch.client.Client;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import io.cereebro.core.Dependency;
@@ -37,7 +38,7 @@ import io.cereebro.core.RelationshipDetector;
  * @author lwarrot
  *
  */
-public class ElasticSearchRelationshipDetector implements RelationshipDetector {
+public class ElasticSearchRelationshipDetector extends BaseRelationshipDetector implements RelationshipDetector  {
 
     private final List<Client> clients;
 

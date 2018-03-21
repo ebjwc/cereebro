@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * 
  * @author michaeltecourt
  */
-public class CompositeRelationshipDetector implements RelationshipDetector {
+public class CompositeRelationshipDetector extends BaseRelationshipDetector implements RelationshipDetector {
 
     private final List<RelationshipDetector> detectors;
 

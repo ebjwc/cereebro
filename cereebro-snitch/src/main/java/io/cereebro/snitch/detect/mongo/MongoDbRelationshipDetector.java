@@ -23,6 +23,7 @@ import java.util.Set;
 
 import com.mongodb.MongoClient;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import io.cereebro.core.Dependency;
@@ -37,7 +38,7 @@ import io.cereebro.core.RelationshipDetector;
  * @author lwarrot
  *
  */
-public class MongoDbRelationshipDetector implements RelationshipDetector {
+public class MongoDbRelationshipDetector extends BaseRelationshipDetector implements RelationshipDetector {
 
     private List<MongoClient> clients;
 

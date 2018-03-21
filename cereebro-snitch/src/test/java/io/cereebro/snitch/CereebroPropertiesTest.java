@@ -18,8 +18,8 @@ package io.cereebro.snitch;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.mock.env.MockEnvironment;
+import org.springframework.util.StringValueResolver;
 
-import io.cereebro.snitch.CereebroProperties;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import nl.jqno.equalsverifier.Warning;
 
@@ -37,10 +37,15 @@ public class CereebroPropertiesTest {
 
     @Test
     public void setEnvironmentWithSpringApplicationNameShouldSetComponentName() {
+        System.setProperty("spring.application.name", "cyclop");
         CereebroProperties c = new CereebroProperties();
         MockEnvironment env = new MockEnvironment();
-        env.setProperty("spring.application.name", "cyclop");
-        c.setEnvironment(env);
+        env.setProperty("spring.application.name", "cyclop");        
+        c.setEmbeddedValueResolver(new StringValueResolver() {
+			@Override
+			public String resolveStringValue(String strVal) {
+				return env.resolvePlaceholders(strVal);
+			}});
         Assert.assertEquals("cyclop", c.getApplication().getComponent().getName());
     }
 
@@ -48,7 +53,6 @@ public class CereebroPropertiesTest {
     public void setEnvironmentWithoutSpringApplicationNameShouldntChangeComponentName() {
         CereebroProperties c = new CereebroProperties();
         c.getApplication().getComponent().setName("storm");
-        c.setEnvironment(new MockEnvironment());
         Assert.assertEquals("storm", c.getApplication().getComponent().getName());
     }
 

@@ -25,6 +25,7 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import io.cereebro.core.Dependency;
@@ -41,11 +42,11 @@ import lombok.Setter;
  * @author michaeltecourt
  *
  */
-public class RedisRelationshipDetector implements RelationshipDetector {
+public class RedisRelationshipDetector extends BaseRelationshipDetector implements RelationshipDetector {
 
     @Getter
     @Setter
-    private String defaultName = "default";
+    private String defaultName = "redis";
 
     private final RedisProperties redisProperties;
     private final List<RedisConnectionFactory> connectionFactories;

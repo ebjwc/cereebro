@@ -32,6 +32,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.type.MethodMetadata;
 import org.springframework.util.CollectionUtils;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Relationship;
 import io.cereebro.core.RelationshipDetector;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,7 @@ import lombok.extern.slf4j.Slf4j;
  *            Annotation to detect.
  */
 @Slf4j
-public abstract class AnnotationRelationshipDetector<T extends Annotation>
+public abstract class AnnotationRelationshipDetector<T extends Annotation> extends BaseRelationshipDetector
         implements RelationshipDetector, ApplicationContextAware {
 
     private ConfigurableApplicationContext applicationContext;

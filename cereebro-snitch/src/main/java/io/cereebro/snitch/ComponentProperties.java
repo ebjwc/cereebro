@@ -15,15 +15,19 @@
  */
 package io.cereebro.snitch;
 
+import java.util.Map;
+
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import lombok.Data;
+
 
 @Data
 public final class ComponentProperties {
 
     private String name;
     private String type = ComponentType.HTTP_APPLICATION;
+    private Map<String,Object> properties;
 
     /**
      * Convert this properties class to a core {@link Component} object.
@@ -31,6 +35,7 @@ public final class ComponentProperties {
      * @return io.cereebro.core.Component
      */
     public Component toComponent() {
-        return Component.of(name, type);
+        return Component.of(getName(), getType(),getProperties());
     }
+
 }

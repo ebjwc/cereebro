@@ -22,6 +22,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoT
 import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import io.cereebro.core.Dependency;
@@ -36,7 +37,7 @@ import lombok.Setter;
  * 
  * @author michaeltecourt
  */
-public class AuthorizationServerRelationshipDetector implements RelationshipDetector {
+public class AuthorizationServerRelationshipDetector extends BaseRelationshipDetector  implements RelationshipDetector {
 
     private final ResourceServerTokenServices tokenService;
 

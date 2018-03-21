@@ -16,7 +16,7 @@
  
 package io.cereebro.server.neo4j;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -26,6 +26,7 @@ import org.springframework.data.neo4j.repository.config.EnableNeo4jRepositories;
 
 import io.cereebro.core.SystemResolver;
 import io.cereebro.server.CereebroServerConfiguration;
+import io.cereebro.server.CereebroServerProperties;
 import io.cereebro.server.neo4j.repository.MicroserviceDependencyRepository;
 import io.cereebro.server.neo4j.repository.MicroserviceRepository;
 
@@ -36,8 +37,6 @@ import io.cereebro.server.neo4j.repository.MicroserviceRepository;
 @EntityScan(basePackages = "io.cereebro.server.neo4j.model")
 public class CerebroNeo4jConfiguration {
 	
-	@Value("${daivb.admin.dependency.component.filter:}")
-	private String componentFilter;
 	
 	@Bean
 	public MicroserviceDependencyService microserviceDependencyService(MicroserviceRepository microserviceRepository,MicroserviceDependencyRepository microserviceDependencyRepository ) {
@@ -46,7 +45,7 @@ public class CerebroNeo4jConfiguration {
 	
 	@Bean("systemResolver")
     public SystemResolver systemResolver(MicroserviceDependencyService microserviceDependencyService) {
-        return new Neo4jCerebroSystemResolver(microserviceDependencyService,componentFilter);
+        return new Neo4jCerebroSystemResolver(microserviceDependencyService);
     }
 
 }

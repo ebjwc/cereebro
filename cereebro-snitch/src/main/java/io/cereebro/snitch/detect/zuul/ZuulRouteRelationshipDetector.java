@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import org.springframework.cloud.netflix.zuul.filters.Route;
 import org.springframework.cloud.netflix.zuul.filters.RouteLocator;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import io.cereebro.core.Dependency;
@@ -34,7 +35,7 @@ import io.cereebro.core.RelationshipDetector;
  * 
  * @author michaeltecourt
  */
-public class ZuulRouteRelationshipDetector implements RelationshipDetector {
+public class ZuulRouteRelationshipDetector extends BaseRelationshipDetector implements RelationshipDetector  {
 
     private final RouteLocator routeLocator;
     private final Pattern routeLocationExclusion;

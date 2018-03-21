@@ -55,7 +55,7 @@ public class LdapRelationshipDetectorTest {
         ContextSource ctx = Mockito.mock(ContextSource.class);
         LdapRelationshipDetector detector = new LdapRelationshipDetector(Arrays.asList(ctx));
         Set<Relationship> actual = detector.detect();
-        Dependency dependency = Dependency.on(Component.of("default", "directory/ldap"));
+        Dependency dependency = Dependency.on(Component.of("ldap", "directory/ldap"));
         Set<Relationship> expected = new HashSet<>();
         expected.add(dependency);
         Assertions.assertThat(actual).isEqualTo(expected);
@@ -67,7 +67,7 @@ public class LdapRelationshipDetectorTest {
                 Mockito.mock(ContextSource.class));
         LdapRelationshipDetector detector = new LdapRelationshipDetector(contextSources);
         Set<Relationship> actual = detector.detect();
-        Dependency dependency = Dependency.on(Component.of("default", "directory/ldap"));
+        Dependency dependency = Dependency.on(Component.of("ldap", "directory/ldap"));
         Set<Relationship> expected = new HashSet<>();
         expected.add(dependency);
         Assertions.assertThat(actual).isEqualTo(expected);

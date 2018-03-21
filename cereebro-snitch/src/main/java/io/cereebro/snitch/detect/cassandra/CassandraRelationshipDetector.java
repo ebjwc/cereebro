@@ -24,6 +24,7 @@ import java.util.Set;
 
 import com.datastax.driver.core.Session;
 
+import io.cereebro.core.BaseRelationshipDetector;
 import io.cereebro.core.Component;
 import io.cereebro.core.ComponentType;
 import io.cereebro.core.Dependency;
@@ -38,7 +39,7 @@ import io.cereebro.core.RelationshipDetector;
  * @author lwarrot
  *
  */
-public class CassandraRelationshipDetector implements RelationshipDetector {
+public class CassandraRelationshipDetector extends BaseRelationshipDetector  implements RelationshipDetector {
 
     private List<Session> sessions;
 
