@@ -18,14 +18,11 @@ package io.cereebro.snitch.actuate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import io.cereebro.core.ApplicationAnalyzer;
 import io.cereebro.core.RelationshipDetector;
@@ -33,27 +30,14 @@ import io.cereebro.core.SnitchEndpoint;
 
 @ConditionalOnClass(Endpoint.class)
 @ConditionalOnWebApplication
-public class CereebroWebMvcEndpointConfiguration implements WebMvcConfigurer {
+public class CereebroWebMvcEndpointConfiguration {
 
     @Autowired
     private ApplicationAnalyzer analyzer;
     
-    @Value("${management.endpoints.web.base-path:/actuator}")
-    private String basePath;
-
     @Bean
     @ConditionalOnMissingBean(SnitchEndpoint.class)
     public CereebroSnitchMvcEndpoint snitchMvcEndpoint(List<RelationshipDetector> detectors) {
         return new CereebroSnitchMvcEndpoint(analyzer);
-    }
-    
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        // To keep backward compatibility with previous servers.
-        // Since Spring Boot 2 by default Cereebro is exposed as /actuator/cereebro
-        // There is no easy way to change default url mapping to /actuator/cereebro/snitch in cereebro-snitch code unless
-        // explicitly changed in service using 'management.endpoints.web.path-mapping.cereebro=/actuator/cereebro/snitch'.
-        registry.addViewController(basePath + CereebroSnitchMvcEndpoint.DEFAULT_PATH)
-                .setViewName("forward:" + basePath + "/cereebro");
     }
 }
